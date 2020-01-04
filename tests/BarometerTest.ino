@@ -28,7 +28,7 @@ void setup() {
 }
 void loop() {
   // Time since launch
-  Serial.print("Time since launch: ");
+  Serial.print(F("Time since launch: "));
   time = millis();
   Serial.println(time);
   // Print this all to the serial monitor for testing purposes
