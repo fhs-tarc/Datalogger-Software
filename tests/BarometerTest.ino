@@ -1,3 +1,7 @@
+/*
+ * This program is designed to test a barometer, as well as test writing data to a SPI flash chip and an SD card.
+ */
+
 #include <Wire.h>
 #include <SPI.h>
 #include <Adafruit_BMP280.h>
