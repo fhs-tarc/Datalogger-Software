@@ -18,7 +18,7 @@ int address = 0;
 void setup() {
   Serial.begin(9600);
   delay(1000);
-  Serial.println("Processor is awake.\n");
+  Serial.println(F("Processor is awake.\n"));
   // Start the IMU
   imu.begin();
 }
@@ -28,20 +28,20 @@ void loop() {
   time = millis();
   Serial.println(time);
   // Get all parameters from accelerometer.
-  Serial.print("\nAccelerometer:\n");
-  Serial.print(" X = ");
+  Serial.print(F("\nAccelerometer:\n"));
+  Serial.print(F(" X = "));
   Serial.println(myIMU.readFloatAccelX(), 4);
-  Serial.print(" Y = ");
+  Serial.print(F(" Y = "));
   Serial.println(myIMU.readFloatAccelY(), 4);
-  Serial.print(" Z = ");
+  Serial.print(F(" Z = "));
   Serial.println(myIMU.readFloatAccelZ(), 4);
   // Get all parameters from gyro.
   Serial.print("\nGyroscope:\n");
-  Serial.print(" X = ");
+  Serial.print(F(" X = "));
   Serial.println(myIMU.readFloatGyroX(), 4);
-  Serial.print(" Y = ");
+  Serial.print(F(" Y = "));
   Serial.println(myIMU.readFloatGyroY(), 4);
-  Serial.print(" Z = ");
+  Serial.print(F(" Z = "));
   Serial.println(myIMU.readFloatGyroZ(), 4);
   // Write values to struct, transfer to flash.
   thisData = {myIMU.readFloatAccelX(), myIMU.readFloatAccelY(), myIMU.readFloatAccelZ()
