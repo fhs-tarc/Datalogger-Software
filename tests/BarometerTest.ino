@@ -15,6 +15,7 @@ struct Data {
     int pressure;
     float altitude;
 };
+Data thisData;
 int address = 0;
 
 void setup() {
@@ -52,7 +53,7 @@ void loop() {
     Serial.print(bmp.readAltitude(1007.45));
     Serial.println(" m");
     // Save this information to the struct
-    Data thisData = {bmp.readTemperature(), bmp.readPressure(); bmp.readAltitude(1007.45)};
+    thisData = {bmp.readTemperature(), bmp.readPressure(); bmp.readAltitude(1007.45)};
     writeAnything(address, thisData); // write the current struct to the address defined by the previous struct
     address += sizeOf(thisData);
     delay(100); //this will execute 10 times per second
