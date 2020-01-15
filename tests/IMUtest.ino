@@ -51,3 +51,6 @@ void loop() {
   address += sizeOf(thisData);
   delay(100); //this will execute 10 times per second
 }
+/* Using read anything from the flash library, we can write the data we collected line by line
+   to an csv file on the SD card. We'll increment the address by sizeOf everytime and write by one line at a time
+   to the SD card using write() in the SD library*/
