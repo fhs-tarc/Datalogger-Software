@@ -2,6 +2,7 @@
  * This program is designed to test a barometer, as well as test writing data to a SPI flash chip and an SD card.
  */
 
+#include <Arduino.h>
 #include <Wire.h>
 #include <SPI.h>
 #include <Adafruit_BMP280.h>
@@ -13,7 +14,7 @@ SPIFlash flash;
 struct Data {
     unsigned long time;
     float temperature;
-    int pressure;
+    float pressure;
     float altitude;
 };
 Data thisData;
@@ -41,7 +42,7 @@ void loop() {
     Serial.println(millis());
     // Print this all to the serial monitor for testing purposes
     // What's the temp?
-    Serial.print(F("Temperature = ");
+    Serial.print(F("Temperature = "));
     Serial.print(bmp.readTemperature());
     Serial.println(" *C");
     // What's the pressure?
@@ -53,8 +54,8 @@ void loop() {
     Serial.print(bmp.readAltitude(1007.45));
     Serial.println(" m");
     // Save this information to the struct
-    thisData = {millis(), bmp.readTemperature(), bmp.readPressure(); bmp.readAltitude(1007.45)};
-    writeAnything(address, thisData); // write the current struct to the address defined by the previous struct
-    address += sizeOf(thisData);
+    thisData = {millis(), bmp.readTemperature(), bmp.readPressure(), bmp.readAltitude(1007.45)};
+    flash.writeAnything(address, thisData); // write the current struct to the address defined by the previous struct
+    address += sizeof(thisData);
     delay(100); //this will execute 10 times per second
 }
