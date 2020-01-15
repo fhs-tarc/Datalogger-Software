@@ -25,8 +25,7 @@ void setup() {
 void loop() {
   // Time since launch
   Serial.print(F("Time since launch: "));
-  time = millis();
-  Serial.println(time);
+  Serial.println(millis());
   // Get all parameters from accelerometer.
   Serial.print(F("\nAccelerometer:\n"));
   Serial.print(F(" X = "));
@@ -44,7 +43,7 @@ void loop() {
   Serial.print(F(" Z = "));
   Serial.println(myIMU.readFloatGyroZ(), 4);
   // Write values to struct, transfer to flash.
-  thisData = {myIMU.readFloatAccelX(), myIMU.readFloatAccelY(), myIMU.readFloatAccelZ()
+  thisData = {millis(), myIMU.readFloatAccelX(), myIMU.readFloatAccelY(), myIMU.readFloatAccelZ()
                   myIMU.readFloatGyroX(), myIMU.readFloatGyroY(), myIMU.readFloatGyroZ()};
   address += sizeOf(thisData);
   delay(100); //this will execute 10 times per second
