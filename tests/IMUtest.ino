@@ -19,6 +19,8 @@ void setup() {
   Serial.begin(9600);
   delay(1000);
   Serial.println(F("Processor is awake.\n"));
+  // Start the Flash
+  flash.begin();
   // Start the IMU
   imu.begin();
 }
@@ -45,6 +47,7 @@ void loop() {
   // Write values to struct, transfer to flash.
   thisData = {millis(), myIMU.readFloatAccelX(), myIMU.readFloatAccelY(), myIMU.readFloatAccelZ()
                   myIMU.readFloatGyroX(), myIMU.readFloatGyroY(), myIMU.readFloatGyroZ()};
+  writeAnything(address, thisData);
   address += sizeOf(thisData);
   delay(100); //this will execute 10 times per second
 }
