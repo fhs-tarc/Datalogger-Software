@@ -11,6 +11,7 @@ Adafruit_BMP280 bmp;
 unsigned long time;
 SPIFlash flash;
 struct Data {
+    unsigned long time;
     float temperature;
     int pressure;
     float altitude;
@@ -37,8 +38,7 @@ void setup() {
 void loop() {
     // Time since launch
     Serial.print(F("Time since launch: "));
-    time = millis();
-    Serial.println(time);
+    Serial.println(millis());
     // Print this all to the serial monitor for testing purposes
     // What's the temp?
     Serial.print(F("Temperature = ");
@@ -53,7 +53,7 @@ void loop() {
     Serial.print(bmp.readAltitude(1007.45));
     Serial.println(" m");
     // Save this information to the struct
-    thisData = {bmp.readTemperature(), bmp.readPressure(); bmp.readAltitude(1007.45)};
+    thisData = {millis(), bmp.readTemperature(), bmp.readPressure(); bmp.readAltitude(1007.45)};
     writeAnything(address, thisData); // write the current struct to the address defined by the previous struct
     address += sizeOf(thisData);
     delay(100); //this will execute 10 times per second
