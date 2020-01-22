@@ -1,6 +1,8 @@
 #include "SparkFunLSM6DS3.h"
 #include "Wire.h"
 #include "SPI.h"
+#include "SPI.h"
+#include "SD.h"
 
 LSM6DS3 imu;
 SPIFlash flash;
@@ -14,7 +16,10 @@ struct Data {
   float omegaSubZ;
 }
 Data thisData;
+File flightData;
 int address = 0;
+int maxAddress = 0;
+void saveToSD();
 void setup() {
   Serial.begin(9600);
   delay(1000);
@@ -51,6 +56,17 @@ void loop() {
   address += sizeOf(thisData);
   delay(100); //this will execute 10 times per second
 }
-/* Using read anything from the flash library, we can write the data we collected line by line
-   to an csv file on the SD card. We'll increment the address by sizeOf everytime and write by one line at a time
-   to the SD card using write() in the SD library*/
+void saveToSD() {
+    int counter = 1;
+    address = 0;
+    while( SD.exists("data" + counter + ".csv") ) {
+        counter++;
+    }
+    flightData = SD.open("data" + counter + ".csv");
+    while( address < maxAddress ) {
+        flash.readAnything(address, thisData);
+        flightData.println(thisData.aSubx, thisData.aSuby, thisData.aSubz, thisData.omegaSubx, thisData.omegaSuby,
+                           thisData.omegaSubZ);
+        address += sizeof(thisData);
+    }
+}
