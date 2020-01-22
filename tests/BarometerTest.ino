@@ -7,10 +7,13 @@
 #include <SPI.h>
 #include <Adafruit_BMP280.h>
 #include <SPIMemory.h>
+#include <SPI.h>
+#include <SD.h>
 
 Adafruit_BMP280 bmp;
 unsigned long time;
 SPIFlash flash;
+File flightData;
 struct Data {
     unsigned long time;
     float temperature;
@@ -19,11 +22,14 @@ struct Data {
 };
 Data thisData;
 int address = 0;
+int maxAddress = 0;
+void saveToSD();
 
 void setup() {
     Serial.begin(9600); 
     Serial.println(F("BMP280 test"));
     flash.begin();
+    SD.begin(4);
     if (!bmp.begin()) {
         Serial.println(F("Could not find a valid BMP280 sensor, check wiring!"));
         while (1);
@@ -58,4 +64,21 @@ void loop() {
     flash.writeAnything(address, thisData); // write the current struct to the address defined by the previous struct
     address += sizeof(thisData);
     delay(100); //this will execute 10 times per second
+    if(millis() > 20000) {
+        maxAddress = address;
+        saveToSD();
+    }
+}
+void saveToSD() {
+    int counter = 1;
+    address = 0;
+    while( SD.exists("data" + counter + ".csv") ) {
+        counter++;
+    }
+    flightData = SD.open("data" + counter + ".csv");
+    while( address < maxAddress ) {
+        flash.readAnything(address, thisData);
+        flightData.println(thisData.time, thisData.temperature, thisData.pressure, thisData.altitude);
+        address += sizeof(thisData);
+    }
 }
