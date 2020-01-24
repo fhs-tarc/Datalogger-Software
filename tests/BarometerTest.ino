@@ -23,6 +23,7 @@ struct Data {
 Data thisData;
 int address = 0;
 int maxAddress = 0;
+String filename;
 void saveToSD();
 
 void setup() {
@@ -35,6 +36,9 @@ void setup() {
         while (1);
     }
     Serial.println(F("BMP280 test"));
+
+    filename = String();
+
     bmp.setSampling(Adafruit_BMP280::MODE_NORMAL,     /* Operating Mode. */
                     Adafruit_BMP280::SAMPLING_X2,     /* Temp. oversampling */
                     Adafruit_BMP280::SAMPLING_X16,    /* Pressure oversampling */
@@ -72,13 +76,20 @@ void loop() {
 void saveToSD() {
     int counter = 1;
     address = 0;
-    while( SD.exists("data" + counter + ".csv") ) {
+    char filename[12];
+    sprintf(filename, "data%d.csv", counter);
+    while(SD.exists(filename) ) {
         counter++;
+        sprintf(filename, "data%d.csv", counter);
     }
-    flightData = SD.open("data" + counter + ".csv");
+    
+    flightData = SD.open(filename);
     while( address < maxAddress ) {
         flash.readAnything(address, thisData);
-        flightData.println(thisData.time, thisData.temperature, thisData.pressure, thisData.altitude);
+        flightData.print(thisData.time); flightData.print(",");
+        flightData.print(thisData.temperature); flightData.print(",");
+        flightData.print(thisData.pressure); flightData.print(",");
+        flightData.println(thisData.altitude);
         address += sizeof(thisData);
     }
 }
