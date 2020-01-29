@@ -1,5 +1,4 @@
-#include "math.h"
 double drag(double v, double ce) {
-  double drag = pow(v, 2) * ce;
+  double drag = v * v * ce;
   return drag;
 }
