@@ -10,7 +10,7 @@ double density(double pressure, double temperature) {
   return density = (M * pressure) / (R * temperature);
 }
 
-double apogee(double ycurrent, double vcurrent, double theta, double pressure, double temperature) {
+double apogee(double ycurrent, double vcurrent, double theta, double pressure, double temperature, double CdA) {
   double density = density(pressure, temperature);
-  return apogee = (3 * vcurrent * vcurrent) / (2 * (g * drag(vcurrent, density) * cos(theta));
+  return apogee = ycurrent + (3 * vcurrent * vcurrent) / (2 * (g * drag(vcurrent, density, CdA) * cos(theta));
 }
