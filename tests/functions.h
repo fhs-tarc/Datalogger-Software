@@ -1,16 +1,11 @@
 #define g 9.80665
-#define m 1 // mass in kg
 
-double drag(double v, double density, double CdA) {
-  return CdA * v * v * density / 2;
+// temperature in C, pressure in Pa, Cd, area in m2
+double get_k(double temperature, double pressure, double Cd, double A) {
+  return (pressure / ((temperature + 273.15) * 287.058)) * Cd * A / 2;
 }
 
-// pressure in Pa, temperature in C
-double density(double pressure, double temperature) {
-  return (pressure) / ((temperature + 273.15) * 287.058);
-}
-
-double apogee(double ycurrent, double vcurrent, double theta, double pressure, double temperature, double CdA) {
-  double current_density = density(pressure, temperature);
-  return ycurrent + (3 * vcurrent * vcurrent) / (2 * (g + drag(vcurrent, current_density, CdA) * cos(theta)/m));
+// current altitude in meters, current velocity in meters, wind resistance factor, mass in kg
+double apogee(double y, double v, double k, double m) {
+  return ycurrent + (m / (2 * k)) * log(1 + (k * v * v)/(m * g));
 }
