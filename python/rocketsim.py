@@ -30,6 +30,8 @@ class Motor:
         self.thrustcurve = []
         self.time = []
         self.thrust = []
+        self.mass = 0
+        self.prop_mass = 0
 
         if filename:
             self.load_from_eng(filename)
@@ -45,6 +47,10 @@ class Motor:
                 self.thrustcurve.append(line)
                 self.time.append(line[0])
                 self.thrust.append(line[1])
+            elif line[0] is not ";":
+                line = line.strip().split(" ")
+                self.prop_mass = line[4]
+                self.mass = line[5]
 
     def get_thrust(self, time):
         for i, t in enumerate(self.time):
