@@ -18,14 +18,17 @@ class OpenRocketParser:
     Attributes:
         events (dict): Dictionary containing OpenRocket simulation events and
             times. Keys are same as in simulation file. Times are in seconds.
-        data (list of dict
+        data (list of dicts): Contains a dict for each data point.
+        times (list of floats): List of all time values.
+        headers (list of strings): List of all column headers/dictionary keys.
+        units (dict): Dictionary of units with headers as key.
     """
 
     def __init__(self, filename: str):
         """
 
         Args:
-            filename:
+            filename: String of openrocket csv filename
         """
         self.events = {}
         self.data = []
@@ -74,6 +77,8 @@ class OpenRocketParser:
             if line["Time"] >= time:
                 return line
 
+        return self.data[-1]
+
     def get_liftoff(self):
         """Gets data at liftoff"""
         try:
@@ -118,7 +123,6 @@ def main():
     parser = OpenRocketParser("simdata.csv")
     print(parser.headers)
     print(parser.get_apogee())
-    print(parser.get_column("Time", 1, 2))
 
 
 if __name__ == '__main__':
